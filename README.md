@@ -6,7 +6,9 @@
 
 Install using composer
 
-`composer require rummykhan/github-reader php-http/guzzle6-adapter`
+```php
+composer require rummykhan/github-reader php-http/guzzle6-adapter
+```
 
 Add `ServiceProvider` to `config/app.php` providers array.
 
