@@ -3,6 +3,7 @@
 namespace GithubReader;
 
 
+use GithubReader\Github\Directory;
 use GrahamCampbell\GitHub\GitHubManager;
 
 class RepositoryReader

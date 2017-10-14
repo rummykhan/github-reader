@@ -2,6 +2,8 @@
 
 namespace GithubReader\Github;
 
+use GithubReader\RepositoryReader;
+
 class Directory extends Content
 {
     const FILE = 'file';
@@ -17,7 +19,7 @@ class Directory extends Content
     protected $is_index = false;
 
     /**
-     * GithubRepository constructor.
+     *
      * @param RepositoryReader $reader
      * @param array $readable
      */
