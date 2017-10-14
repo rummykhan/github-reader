@@ -3,10 +3,10 @@
 namespace GithubReader;
 
 
-use GithubReader\Github\Directory;
+use GithubReader\Github\Directory as GithubRepository;
 use GrahamCampbell\GitHub\GitHubManager;
 
-class RepositoryReader
+final class RepositoryReader
 {
     protected $manager;
     protected $organization;
@@ -26,7 +26,7 @@ class RepositoryReader
         $this->organization = $organization;
         $this->repository = $repository;
 
-        return new Directory($this);
+        return new GithubRepository($this);
     }
 
     public function readPath($path = null)

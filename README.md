@@ -36,6 +36,20 @@ Reading a repository is as straight forward as it could be.
 $repository = app('github-reader')->read('rummykhan', 'github-reader');
 ```
 
+## Getting content of a repository file
+
+```php
+$repository = app('github-reader')->read('rummykhan', 'github-reader');
+
+$files = $repository->getFiles();
+
+// This method will retrieve file from github
+$file = $files->first()->retrieve();
+
+var_dump($file->getContent());
+```
+
+
 ## Caveats
 
 Since [Github has changed the api Rate Limit](https://developer.github.com/changes/2012-10-14-rate-limit-changes/) you may get exception for hourly

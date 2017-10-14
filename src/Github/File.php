@@ -2,7 +2,10 @@
 
 namespace GithubReader\Github;
 
-class File extends Content
+final class File extends Content
 {
-
+    public function retrieve()
+    {
+        return new FileContent($this->reader, $this->reader->readPath($this->getPath()));
+    }
 }
