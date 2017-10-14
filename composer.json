@@ -1,0 +1,28 @@
+{
+  "name": "rummykhan/github-reader",
+  "description": "Github Repository Reader.",
+  "keywords": [
+    "Github",
+    "Repository",
+    "Reader"
+  ],
+  "authors": [
+    {
+      "name": "Rehan Manzoor",
+      "email": "rehan_manzoor@outlook.com"
+    }
+  ],
+  "license": "MIT",
+  "type": "package",
+  "require": {
+    "php": ">=5.5.9",
+    "laravel/framework": "5.2.*",
+    "graham-campbell/github": "^6.1",
+    "php-http/guzzle6-adapter": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "GithubReader\\": "src/"
+    }
+  }
+}
