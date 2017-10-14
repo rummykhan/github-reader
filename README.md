@@ -36,7 +36,7 @@ Reading a repository is as straight forward as it could be.
 $repository = app('github-reader')->read('rummykhan', 'github-reader');
 ```
 
-## Getting content of a repository file
+## Getting content of a file
 
 ```php
 $repository = app('github-reader')->read('rummykhan', 'github-reader');
@@ -49,6 +49,30 @@ $file = $files->first()->retrieve();
 var_dump($file->getContent());
 ```
 
+## Query as Collection
+
+Since files and directories are instances of `Illuminate\Support\Collection`, 
+You can query both files or dictionaries just like you query a `Illuminate\Support\Collection`
+
+To Query Files just add `InFiles` to all the collection methods.
+```php
+$repository = app('github-reader')
+        ->read('rummykhan', 'github-reader');
+
+$file = $repository->whereInFiles('name', 'LICENSE')->first();
+
+dd($file);
+```
+
+To Query Dictionaries just add `InDictionaries` to all the Collection methods.
+```php
+$repository = app('github-reader')
+        ->read('rummykhan', 'github-reader');
+
+$dictionary = $repository->whereInDictionaries('name', 'src')->first();
+
+dd($dictionary);
+```
 
 ## Caveats
 

@@ -4,20 +4,21 @@ namespace GithubReader\Github;
 
 
 use GithubReader\RepositoryReader;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 
-abstract class Content
+abstract class Content implements Arrayable
 {
-    protected $reader;
-    protected $name;
-    protected $path = null;
-    protected $sha;
-    protected $size;
-    protected $url;
-    protected $html_url;
-    protected $git_url;
-    protected $download_url;
-    protected $type;
+    public $reader;
+    public $name;
+    public $path = null;
+    public $sha;
+    public $size;
+    public $url;
+    public $html_url;
+    public $git_url;
+    public $download_url;
+    public $type;
 
     public function __construct(RepositoryReader $reader, array $readable)
     {
@@ -203,5 +204,20 @@ abstract class Content
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    public function toArray()
+    {
+        return [
+            'name' => $this->getName(),
+            'path' => $this->getPath(),
+            'sha' => $this->getSha(),
+            'size' => $this->getSize(),
+            'url' => $this->getUrl(),
+            'html_url' => $this->getHtmlUrl(),
+            'git_url' => $this->getGitUrl(),
+            'download_url' => $this->getDownloadUrl(),
+            'type' => $this->getType(),
+        ];
     }
 }

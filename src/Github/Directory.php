@@ -3,6 +3,7 @@
 namespace GithubReader\Github;
 
 use GithubReader\RepositoryReader;
+use Mockery\CountValidator\Exception;
 
 final class Directory extends Content
 {
@@ -75,7 +76,19 @@ final class Directory extends Content
             return call_user_func_array([$this, $name], $arguments);
         }
 
-        collect();
+        if (str_contains($name, 'InDirectories') &&
+            method_exists(collect(), str_replace('InDirectories', '', $name))
+        ) {
+            return call_user_func_array([$this->getDirectories(), str_replace('InDirectories', '', $name)], $arguments);
+        }
+
+        if (str_contains($name, 'InFiles') &&
+            method_exists(collect(), str_replace('InFiles', '', $name))
+        ) {
+            return call_user_func_array([$this->getFiles(), str_replace('InFiles', '', $name)], $arguments);
+        }
+
+        throw new Exception('Method not available.');
     }
 
 }
