@@ -46,7 +46,7 @@ $files = $repository->getFiles();
 // This method will retrieve file from github
 $file = $files->first()->retrieve();
 
-var_dump($file->getContent());
+dd($file->getContent());
 ```
 
 ## Query as Collection
@@ -54,7 +54,7 @@ var_dump($file->getContent());
 Since files and directories are instances of `Illuminate\Support\Collection`, 
 You can query both files or dictionaries just like you query a `Illuminate\Support\Collection`
 
-To Query Files just add `InFiles` to all the collection methods.
+To query in Files just add `InFiles` to all the collection methods.
 ```php
 $repository = app('github-reader')
         ->read('rummykhan', 'github-reader');
@@ -64,7 +64,7 @@ $file = $repository->whereInFiles('name', 'LICENSE')->first();
 dd($file);
 ```
 
-To Query Dictionaries just add `InDictionaries` to all the Collection methods.
+To query in Dictionaries just add `InDictionaries` to all the Collection methods.
 ```php
 $repository = app('github-reader')
         ->read('rummykhan', 'github-reader');
