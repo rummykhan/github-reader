@@ -20,6 +20,11 @@ To use with Facade add
 'GithubReader' => \GithubReader\Facades\GithubReader::class,
 ```
 
+Publish the configuration (github.php)
+
+```php
+php artisan vendor:publish
+```
 
 ## Reading Repository
 
@@ -27,6 +32,24 @@ Reading a repository is as straight forward as it could be.
 
 ```php
 $repository = app('github-reader')->read('rummykhan', 'github-reader');
+```
+
+## Caveats
+
+Since [Github Rate Limit Changes](https://developer.github.com/changes/2012-10-14-rate-limit-changes/) you may get exception for hourly
+rate limit reached. Then you need to [Register Github App](https://developer.github.com/apps/building-integrations/setting-up-and-registering-github-apps/registering-github-apps/)
+and add credentials in `config/github.php`.
+
+```php
+'app' => [
+    'clientId'     => 'xxx**************xxx',
+    'clientSecret' => 'xxx**************xxx',
+    'method'       => 'application',
+    // 'backoff'      => false,
+    // 'cache'        => false,
+    // 'version'      => 'v3',
+    // 'enterprise'   => false,
+],
 ```
 
 ### Contact
