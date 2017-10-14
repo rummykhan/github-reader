@@ -36,7 +36,7 @@ $repository = app('github-reader')->read('rummykhan', 'github-reader');
 
 ## Caveats
 
-Since [Github Rate Limit Changes](https://developer.github.com/changes/2012-10-14-rate-limit-changes/) you may get exception for hourly
+Since [Github has changed the api Rate Limit](https://developer.github.com/changes/2012-10-14-rate-limit-changes/) you may get exception for hourly
 rate limit reached. Then you need to [Register Github App](https://developer.github.com/apps/building-integrations/setting-up-and-registering-github-apps/registering-github-apps/)
 and add credentials in `config/github.php`.
 
