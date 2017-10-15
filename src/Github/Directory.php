@@ -70,6 +70,11 @@ final class Directory extends Content
         return $this->directories;
     }
 
+    public function listAll()
+    {
+        return $this->getDirectories()->merge($this->getFiles());
+    }
+
     public function __call($name, $arguments)
     {
         if (method_exists($this, $name)) {
