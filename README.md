@@ -3,6 +3,21 @@
 This package helps reading a complete github repository & retrieve any file you want to.
 This package is a wrapper around [GrahamCampbell/Laravel-GitHub](https://github.com/GrahamCampbell/Laravel-GitHub), But this package is specifically for reading a Repository in its proper format using [Github Official API](https://developer.github.com/)
 
+## Github Official Format
+
+```bash
+name: "LICENSE"
+path: "LICENSE"
+sha: "c8a38eeec1767ff114eaf7caf5cda6d0a7f8f33d"
+size: 1110
+url: "https://api.github.com/repos/rummykhan/github-reader/contents/LICENSE?ref=master"
+html_url: "https://github.com/rummykhan/github-reader/blob/master/LICENSE"
+git_url: "https://api.github.com/repos/rummykhan/github-reader/git/blobs/c8a38eeec1767ff114eaf7caf5cda6d0a7f8f33d"
+download_url: "https://raw.githubusercontent.com/rummykhan/github-reader/master/LICENSE"
+type: "file"
+```
+Only the type is changed for `directory` / `symlink`.
+
 ## Installation
 
 Install using composer
