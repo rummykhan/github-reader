@@ -8,7 +8,9 @@ use GithubReader\RepositoryReader;
 final class Directory extends Content
 {
     const FILE = 'file';
+
     const DIRECTORY = 'dir';
+
     const SYMLINK = 'symlink';
 
     protected $files;
@@ -80,24 +82,14 @@ final class Directory extends Content
 
     }
 
-    public function find($key, $name, $type = Directory::FILE, $all = true)
+    public function find($key, $name, $all = true)
     {
-        switch ($type) {
-            case Directory::FILE:
-                return $this->findFile($key, $name, $all);
-                break;
-
-            case Directory::DIRECTORY:
-                return $this->findDirectory($key, $name, $all);
-                break;
-        }
-
-        throw new Exception('This file type is not supported.');
+        return $this->findFile($key, $name, $all)->merge($this->findDirectory($key, $name, $all));
     }
 
     public function findDirectory($key, $name, $all = false)
     {
-        if (!$all) {
+        if (! $all) {
             return $this->getDirectories()->where($key, $name);
         }
 
@@ -111,7 +103,7 @@ final class Directory extends Content
 
     public function findFile($key, $name, $all = false)
     {
-        if (!$all) {
+        if (! $all) {
             return $this->getFiles()->where($key, $name);
         }
 
@@ -129,19 +121,14 @@ final class Directory extends Content
             return call_user_func_array([$this, $name], $arguments);
         }
 
-        if (str_contains($name, 'InDirectories') &&
-            method_exists(collect(), str_replace('InDirectories', '', $name))
-        ) {
+        if (str_contains($name, 'InDirectories') && method_exists(collect(), str_replace('InDirectories', '', $name))) {
             return call_user_func_array([$this->getDirectories(), str_replace('InDirectories', '', $name)], $arguments);
         }
 
-        if (str_contains($name, 'InFiles') &&
-            method_exists(collect(), str_replace('InFiles', '', $name))
-        ) {
+        if (str_contains($name, 'InFiles') && method_exists(collect(), str_replace('InFiles', '', $name))) {
             return call_user_func_array([$this->getFiles(), str_replace('InFiles', '', $name)], $arguments);
         }
 
         throw new Exception('Method not available.');
     }
-
 }

@@ -98,5 +98,31 @@ $dictionary = $repository->whereInDictionaries('name', 'src')->first();
 dd($dictionary);
 ```
 
+## Find a file in repository
+
+Since the structure of each item either File/Directory in the repository is like below.
+```bash
+name: "LICENSE"
+path: "LICENSE"
+sha: "c8a38eeec1767ff114eaf7caf5cda6d0a7f8f33d"
+size: 1110
+url: "https://api.github.com/repos/rummykhan/github-reader/contents/LICENSE?ref=master"
+html_url: "https://github.com/rummykhan/github-reader/blob/master/LICENSE"
+git_url: "https://api.github.com/repos/rummykhan/github-reader/git/blobs/c8a38eeec1767ff114eaf7caf5cda6d0a7f8f33d"
+download_url: "https://raw.githubusercontent.com/rummykhan/github-reader/master/LICENSE"
+type: "file"
+```
+
+We can find any all matching files recursively.
+```php
+$repository = app('github-reader')
+        ->read('rummykhan', 'github-reader');
+
+$found = $repository->find('name', 'src');
+
+dd($found);
+```
+
+
 ### Contact
 [rehan_manzoor@outlook.com](mailto://rehan_manzoor@outlook.com)
