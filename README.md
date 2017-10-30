@@ -182,7 +182,7 @@ This `find` method will return a collection.
 
 ## Available Methods
 
-### 2. GithubReader\RepositoryReader 
+### 1. GithubReader\RepositoryReader 
 
 ```php
 
