@@ -2,8 +2,8 @@
 
 namespace GithubReader\Github;
 
+use Exception;
 use GithubReader\RepositoryReader;
-use Mockery\CountValidator\Exception;
 
 final class Directory extends Content
 {
@@ -73,6 +73,54 @@ final class Directory extends Content
     public function listAll()
     {
         return $this->getDirectories()->merge($this->getFiles());
+    }
+
+    public function navigate()
+    {
+
+    }
+
+    public function find($key, $name, $type = Directory::FILE, $all = true)
+    {
+        switch ($type) {
+            case Directory::FILE:
+                return $this->findFile($key, $name, $all);
+                break;
+
+            case Directory::DIRECTORY:
+                return $this->findDirectory($key, $name, $all);
+                break;
+        }
+
+        throw new Exception('This file type is not supported.');
+    }
+
+    public function findDirectory($key, $name, $all = false)
+    {
+        if (!$all) {
+            return $this->getDirectories()->where($key, $name);
+        }
+
+        $found = $this->getDirectories()->where($key, $name);
+        foreach ($this->getDirectories() as $directory) {
+            $found->merge($directory->findDirectory($key, $name, $all));
+        }
+
+        return $found;
+    }
+
+    public function findFile($key, $name, $all = false)
+    {
+        if (!$all) {
+            return $this->getFiles()->where($key, $name);
+        }
+
+        $found = $this->getFiles()->where($key, $name);
+        foreach ($this->getDirectories() as $directory) {
+            $found->merge($directory->findFile($key, $name, $all));
+        }
+
+        return $found;
     }
 
     public function __call($name, $arguments)
