@@ -113,15 +113,29 @@ download_url: "https://raw.githubusercontent.com/rummykhan/github-reader/master/
 type: "file"
 ```
 
-We can find any all matching files recursively.
+We can find any all matching directory/files recursively.
+
 ```php
 $repository = app('github-reader')
         ->read('rummykhan', 'github-reader');
 
-$found = $repository->find('name', 'src');
+$found = $repository->find('type', 'file');
 
 dd($found);
 ```
+
+Third parameter in the find is to find recursively
+
+```php
+$repository = app('github-reader')
+        ->read('rummykhan', 'github-reader');
+
+$found = $repository->find('name', 'File.php', true);
+
+dd($found);
+```
+
+This `find` method will return a collection.
 
 
 ### Contact
