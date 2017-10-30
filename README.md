@@ -190,7 +190,7 @@ $reader = app('github-reader')
 ```
 
 | Name                                          | Purpose |
-| ----------------------------------------------------------- |:-------------:|
+| ----------------------------------------------------------- |-------------|
 | `init($organization, $repositoryName, $connection = null)` | Initialize the repository with organization/user and repository name. |
 | `getConnection()`      									| Getter for connection. |
 | `setConnection(string $connection)` 						| Set the connection.|
@@ -217,7 +217,7 @@ $repository = app('github-reader')->read('rummykhan','github-reader');
  ```
 
 | Name                                          | Purpose |
-| --------------------------------------------- |:-------------:|
+| --------------------------------------------- |-------------|
 | `getFiles()`     								| Get all files in that directory. |
 | `getDirectories()`      						| Get all directories in that directory. |
 | `listAll()` 									| Get all files and directories in that directory.|
@@ -237,7 +237,7 @@ $file = $repository->getFiles()->first();
 ```
 
 | Name                                          | Purpose |
-| --------------------------------------------- |:-------------:|
+| --------------------------------------------- |-------------|
 | `retrieve()` 									| It will give you instance of `Github\Github\FileContent`. |
 
 ### 4. GithubReader\Github\FileContent
@@ -248,7 +248,7 @@ $file = $repository->getFiles()->first();
 $fileContent = $file->retrieve();
 ```
 | Name                                          | Purpose |
-| --------------------------------------------- |:-------------:|
+| --------------------------------------------- |-------------|
 | `getContent()` 							    | It will give content of file in plain text. |
 
 ### Contact
