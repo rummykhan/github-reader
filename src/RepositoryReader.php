@@ -34,12 +34,16 @@ final class RepositoryReader
      * @param $organization
      * @param $repositoryName
      * @param $connection
+     *
+     * @return $this
      */
     public function init($organization, $repositoryName, $connection = null)
     {
         $this->setOrganization($organization);
         $this->setRepositoryName($repositoryName);
         $this->setConnection($connection);
+
+        return $this;
     }
 
     /**
@@ -55,11 +59,21 @@ final class RepositoryReader
      *
      * @return $this
      */
-    public function setConnection($connection)
+    public function setConnection(string $connection)
     {
         $this->connection = $connection;
 
         return $this;
+    }
+
+    /**
+     * Getter for organization.
+     *
+     * @return string|null
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 
     /**
@@ -73,6 +87,16 @@ final class RepositoryReader
         $this->organization = $organization;
 
         return $this;
+    }
+
+    /**
+     * Getter for repository name.
+     *
+     * @return string|null
+     */
+    public function getRepositoryName()
+    {
+        return $this->repositoryName;
     }
 
     /**
@@ -93,29 +117,9 @@ final class RepositoryReader
      *
      * @return \GrahamCampbell\GitHub\GitHubManager
      */
-    public function getManager(): \GrahamCampbell\GitHub\GitHubManager
+    protected function getManager(): \GrahamCampbell\GitHub\GitHubManager
     {
         return $this->manager;
-    }
-
-    /**
-     * Getter for organization.
-     *
-     * @return string|null
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * Getter for repository name.
-     *
-     * @return string|null
-     */
-    public function getRepositoryName()
-    {
-        return $this->repositoryName;
     }
 
     /**
@@ -155,6 +159,6 @@ final class RepositoryReader
      */
     public function readPath($path = null)
     {
-        return $this->manager->connection($this->getConnection())->api('repo')->contents()->show($this->getOrganization(), $this->getRepositoryName(), $path);
+        return $this->getManager()->connection($this->getConnection())->api('repo')->contents()->show($this->getOrganization(), $this->getRepositoryName(), $path);
     }
 }

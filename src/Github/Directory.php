@@ -161,7 +161,7 @@ final class Directory extends Content implements Arrayable, Jsonable
 
     /**
      * Convert the object to its Array representation
-     * 
+     *
      * @return array
      */
     public function toArray()

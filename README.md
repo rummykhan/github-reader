@@ -73,6 +73,8 @@ Reading a repository is as straight forward as it could be.
 
 ```php
 $repository = app('github-reader')->read('rummykhan', 'github-reader');
+
+dd($repository);
 ```
 
 ## Getting content of a file
@@ -88,10 +90,21 @@ $file = $files->first()->retrieve();
 dd($file->getContent());
 ```
 
-## Query as Collection
+## Query Files
 
 Since files and directories are instances of `Illuminate\Support\Collection`, 
 You can query both files or dictionaries just like you query a `Illuminate\Support\Collection`
+
+There are two ways you can query files.
+```php
+$repository = app('github-reader')
+        ->read('rummykhan', 'github-reader');
+
+$file = $repository->getFiles()->where('name', 'LICENSE')->first();
+
+dd($file);
+```
+**OR**
 
 To query in Files just add `InFiles` to all the collection methods.
 ```php
@@ -101,9 +114,23 @@ $repository = app('github-reader')
 $file = $repository->whereInFiles('name', 'LICENSE')->first();
 
 dd($file);
+
 ```
 
+## Query Directories
+```php
+$repository = app('github-reader')
+        ->read('rummykhan', 'github-reader');
+
+$dictionary = $repository->getDirectories()->where('name', 'src')->first();
+
+dd($dictionary);
+```
+
+**OR**
+
 To query in Dictionaries just add `InDictionaries` to all the Collection methods.
+
 ```php
 $repository = app('github-reader')
         ->read('rummykhan', 'github-reader');
@@ -152,6 +179,77 @@ dd($found);
 
 This `find` method will return a collection.
 
+
+## Available Methods
+
+### 2. GithubReader\RepositoryReader 
+
+```php
+
+$reader = app('github-reader')
+```
+
+| Name                                          | Purpose |
+| ----------------------------------------------------------- |:-------------:|
+| `init($organization, $repositoryName, $connection = null)` | Initialize the repository with organization/user and repository name. |
+| `getConnection()`      									| Getter for connection. |
+| `setConnection(string $connection)` 						| Set the connection.|
+| `getOrganization()` 										| Getter for Organization. |
+| `setOrganization(string $organization)` 					| Setter for organization.|
+| `getRepositoryName()` 									| Getter for repository name. |
+| `setRepositoryName($repositoryName)` 						| Setter for repository name. |
+| `read($organization = null, $repositoryName = null, $connection = null)` | read a repository completely. |
+| `readPath($path = null)` 									| Read only certain path of the repository. |
+
+To only use read path.
+
+```php
+$directory = app('github-reader')
+	->setOrganization('rummykhan')
+	->setRepositoryName('github-reader')
+	->readPath('src');
+```
+
+### 2. GithubReader\Github\Directory Or Repository 
+
+```php
+$repository = app('github-reader')->read('rummykhan','github-reader');
+ ```
+
+| Name                                          | Purpose |
+| --------------------------------------------- |:-------------:|
+| `getFiles()`     								| Get all files in that directory. |
+| `getDirectories()`      						| Get all directories in that directory. |
+| `listAll()` 									| Get all files and directories in that directory.|
+| `retrieve()` 									| Alias of `listAll()`. |
+| `find($key, $name, $all = true)` 				| Find in all files and directories if `$all=true` it will find recursively.|
+| `findDirectory($key, $name, $all = false)` 	| Find in directoris and if `$all=true` it will find recursively. |
+| `findFile($key, $name, $all = false)` 		| Find in files and if `$all=true` it will find recursively.      |
+| `toArray()` 									| Convert the object to array representation. |
+| `toJson($options = 0)` 						| Convert the object to JSON representation. |
+
+### 3. GithubReader\Github\File
+
+```php
+$repository = app('github-reader')->read('rummykhan','github-reader');
+
+$file = $repository->getFiles()->first();
+```
+
+| Name                                          | Purpose |
+| --------------------------------------------- |:-------------:|
+| `retrieve()` 									| It will give you instance of `Github\Github\FileContent`. |
+
+### 4. GithubReader\Github\FileContent
+
+```php
+$repository = app('github-reader')->read('rummykhan','github-reader');
+$file = $repository->getFiles()->first();
+$fileContent = $file->retrieve();
+```
+| Name                                          | Purpose |
+| --------------------------------------------- |:-------------:|
+| `getContent()` 							    | It will give content of file in plain text. |
 
 ### Contact
 [rehan_manzoor@outlook.com](mailto://rehan_manzoor@outlook.com)
