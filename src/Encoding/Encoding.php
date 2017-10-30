@@ -1,6 +1,6 @@
 <?php
 
-namespace GithubReader\Github;
+namespace GithubReader\Encoding;
 
 abstract class Encoding
 {

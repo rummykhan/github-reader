@@ -2,11 +2,20 @@
 
 namespace GithubReader\Github;
 
+use Exception;
 use GithubReader\RepositoryReader;
+use GithubReader\Encoding\Encoding;
 
+/**
+ * Class FileContent
+ *  This Class Serve as a Content Holder of the file. User can use getContent() to get the contents of the file.
+ *
+ * @package GithubReader\Github
+ */
 final class FileContent extends Content
 {
     protected $content;
+
     protected $encoding;
 
     public function __construct(RepositoryReader $reader, array $readable)
@@ -33,5 +42,10 @@ final class FileContent extends Content
     protected function setEncoding($encoding)
     {
         $this->encoding = $encoding;
+    }
+
+    public function retrieve()
+    {
+        throw new Exception('This method is not required here.');
     }
 }

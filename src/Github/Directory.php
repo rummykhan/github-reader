@@ -4,20 +4,21 @@ namespace GithubReader\Github;
 
 use Exception;
 use GithubReader\RepositoryReader;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 
-final class Directory extends Content
+/**
+ * Class Directory
+ *  Since Github itself is a directoy, and each directoy is also a kind of Github repositoy
+ *  So here we are considering the same. and recursively reading it.
+ *
+ * @package GithubReader\Github
+ */
+final class Directory extends Content implements Arrayable, Jsonable
 {
-    const FILE = 'file';
-
-    const DIRECTORY = 'dir';
-
-    const SYMLINK = 'symlink';
-
     protected $files;
 
     protected $directories;
-
-    protected $is_index = false;
 
     /**
      *
@@ -34,25 +35,34 @@ final class Directory extends Content
         $this->read();
     }
 
-    public function add(array $readable)
-    {
-        switch ($readable['type']) {
-            case Directory::FILE:
-                $this->files->push(new File($this->reader, $readable));
-                break;
-
-            case Directory::DIRECTORY:
-                $this->directories->push(new Directory($this->reader, $readable));
-                break;
-        }
-    }
-
+    /**
+     * Here we are reading the directory itself
+     * If directory is index path would be null
+     */
     protected function read()
     {
         $contents = $this->reader->readPath($this->path);
 
         foreach ($contents as $readable) {
             $this->add($readable);
+        }
+    }
+
+    /**
+     * Internal function to add the entity to corresponding collection.
+     *
+     * @param array $readable
+     */
+    protected function add(array $readable)
+    {
+        switch ($readable['type']) {
+            case FileType::FILE:
+                $this->files->push(new File($this->reader, $readable));
+                break;
+
+            case FileType::DIRECTORY:
+                $this->directories->push(new Directory($this->reader, $readable));
+                break;
         }
     }
 
@@ -72,21 +82,47 @@ final class Directory extends Content
         return $this->directories;
     }
 
+    /**
+     * get all the directories and files.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function listAll()
     {
         return $this->getDirectories()->merge($this->getFiles());
     }
 
-    public function navigate()
+    /**
+     * retrieve the contents of a directory.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function retrieve()
     {
-
+        return $this->listAll();
     }
 
+    /**
+     * Find a specific file or directory by key.
+     *
+     * @param $key
+     * @param $name
+     * @param bool $all
+     * @return \Illuminate\Support\Collection
+     */
     public function find($key, $name, $all = true)
     {
         return $this->findFile($key, $name, $all)->merge($this->findDirectory($key, $name, $all));
     }
 
+    /**
+     * Find a specific directory or recursively.
+     *
+     * @param $key
+     * @param $name
+     * @param bool $all
+     * @return \Illuminate\Support\Collection
+     */
     public function findDirectory($key, $name, $all = false)
     {
         if (! $all) {
@@ -101,6 +137,14 @@ final class Directory extends Content
         return $found;
     }
 
+    /**
+     * Find a file inside a directory or recursively.
+     *
+     * @param $key
+     * @param $name
+     * @param bool $all
+     * @return \Illuminate\Support\Collection
+     */
     public function findFile($key, $name, $all = false)
     {
         if (! $all) {
@@ -115,6 +159,30 @@ final class Directory extends Content
         return $found;
     }
 
+    /**
+     * Convert the object to its Array representation
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->listAll()->toArray();
+    }
+
+    /**
+     * Convert the object to its JSON representation.
+     *
+     * @param  int $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return $this->listAll()->toJson($options);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __call($name, $arguments)
     {
         if (method_exists($this, $name)) {

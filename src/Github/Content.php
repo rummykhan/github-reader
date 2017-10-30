@@ -2,34 +2,60 @@
 
 namespace GithubReader\Github;
 
-
 use GithubReader\RepositoryReader;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 
+/**
+ * Class Content
+ *  This class is made abstract to give away the basic api functionality and let the subclasses decide
+ *  what type of content is to be retrieved how.
+ *
+ * @package GithubReader\Github
+ */
 abstract class Content implements Arrayable
 {
     public $reader;
+
     public $name;
+
     public $path = null;
+
     public $sha;
+
     public $size;
+
     public $url;
+
     public $html_url;
+
     public $git_url;
+
     public $download_url;
+
     public $type;
 
+    /**
+     * Content constructor.
+     *
+     * @param \GithubReader\RepositoryReader $reader
+     * @param array $readable
+     */
     public function __construct(RepositoryReader $reader, array $readable)
     {
         $this->reader = $reader;
 
         // If $readable is null, mean directory is index of the repository.
-        if (!empty($readable)) {
+        if (! empty($readable)) {
             $this->mapProperties($readable);
         }
     }
 
+    /**
+     * Map array to properties.
+     *
+     * @param $readable
+     */
     protected function mapProperties($readable)
     {
         foreach ($readable as $property => $value) {
@@ -37,13 +63,19 @@ abstract class Content implements Arrayable
         }
     }
 
+    /**
+     * Final function in the map funnel to actually map a property.
+     *
+     * @param $property
+     * @param $value
+     */
     protected function map($property, $value)
     {
-        if (!property_exists($this, $property)) {
+        if (! property_exists($this, $property)) {
             return;
         }
 
-        $this->{'set' . ucfirst(Str::camel($property))}($value);
+        $this->{'set'.ucfirst(Str::camel($property))}($value);
     }
 
     /**
@@ -220,4 +252,6 @@ abstract class Content implements Arrayable
             'type' => $this->getType(),
         ];
     }
+
+    public abstract function retrieve();
 }
